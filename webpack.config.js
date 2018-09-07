@@ -7,9 +7,6 @@ const glob = require("glob")
 const src = path.resolve(__dirname, './src/')
 const dist = path.resolve(__dirname, './dist/')
 
-const scriptsEntries = path.resolve(src, './scripts/')
-const stylesheetsEntries = path.resolve(src, './stylesheets/')
-
 const entries = {}
 glob.sync("./src/scripts/entries/**/*.js").map(function(file) {
   const regEx = new RegExp(`./src/scripts/entries/`);
