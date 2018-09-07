@@ -1,18 +1,30 @@
 const path = require('path')
+const { basename, dirname, join, relative, resolve } = require('path')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const glob = require("glob")
+
+const src = path.resolve(__dirname, './src/')
+const dist = path.resolve(__dirname, './dist/')
+
+const scriptsEntries = path.resolve(src, './scripts/')
+const stylesheetsEntries = path.resolve(src, './stylesheets/')
+
+const entries = {}
+glob.sync("./src/scripts/entries/**/*.js").map(function(file) {
+  const regEx = new RegExp(`./src/scripts/entries/`);
+  const key = file.replace(regEx, '');
+  entries[key] = file
+})
 
 module.exports = [
   {
     mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
-    entry: {
-      'index': path.resolve(__dirname, './src/scripts/', "index.js"),
-      'show': path.resolve(__dirname, './src/scripts/', "show.js"),
-    },
+    entry: entries,
     output: {
-      path: path.resolve(__dirname, './dist/'),
+      path: dist,
       publicPath: '/',
-      filename: '[name]-[hash].js'
+      filename: '[name]'
     },
     module: {
       rules: [
@@ -29,14 +41,11 @@ module.exports = [
       port: 8080,
       content: path.resolve(__dirname, 'public'),
     },
-    plugins: [
-      new HtmlWebpackPlugin({ template: "src/html/index.html" })
-    ]
   },
   {
     entry: './src/stylesheets/index.sass',
     output: {
-      path: path.resolve(__dirname, './dist/'),
+      path: dist,
       filename: 'app.css'
     },
     module: {
