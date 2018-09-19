@@ -32,11 +32,9 @@ module.exports = [
         },
       ]
     },
-    devtool: 'source-map',
-    serve: {
-      open: true,
-      port: 8080,
-      content: path.resolve(__dirname, 'public'),
+    devServer: {
+      contentBase: path.resolve(__dirname, 'public'),
+      publicPath: '/',
     },
   },
   {
